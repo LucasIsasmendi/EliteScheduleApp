@@ -1,4 +1,4 @@
-angular.module("eliteApp",["ionic"])
+angular.module('eliteApp',['ionic'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -22,7 +22,11 @@ angular.module("eliteApp",["ionic"])
     abstract: true,
     templateUrl: "app/home/home.html"
   })
+    .state('app', {
+      url: "/app",
+      templateUrl: "app/layout/menu-layout.html"
+    });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/home');
+  $urlRouterProvider.otherwise('/app');
 });
