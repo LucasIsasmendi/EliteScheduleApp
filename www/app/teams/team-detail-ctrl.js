@@ -4,7 +4,7 @@
 
 	function teamDetailCtrl($stateParams, eliteApi) {
 		var vm = this;
-		//console.log("$stateParams", $stateParams);
+
 		vm.teamId = Number($stateParams.id);
 		var data = eliteApi.getLeagueData();
 
