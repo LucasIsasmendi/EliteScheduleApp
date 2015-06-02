@@ -33,6 +33,11 @@
 						};
 					})
 					.value();
+		vm.teamStanding = _.chain(data.standings)
+							.pluck('divisionStandings')
+							.flatten()
+							.find({"teamId": vm.teamId})
+							.value();
 
 	    function isTeamInGame(item){
 	      return item.team1Id === vm.teamId || item.team2Id === vm.teamId;
