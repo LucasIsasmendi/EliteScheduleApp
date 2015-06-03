@@ -12,6 +12,7 @@
 		
 		vm.selectLeague = function(id){
 			eliteApi.setLeagueId(id);
+			//LAI aca agrega el getLEagueData con promise
 			$state.go("app.teams");
 		};
 	};
