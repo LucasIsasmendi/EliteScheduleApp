@@ -1,8 +1,8 @@
 (function() {
 	'use strict';
-	angular.module('eliteApp').controller('teamDetailCtrl', ['$stateParams', '$ionicPopup', 'eliteApi', teamDetailCtrl]);
+	angular.module('eliteApp').controller('teamDetailCtrl', ['$stateParams', '$ionicPopup', 'eliteApi', 'myTeamsService', teamDetailCtrl]);
 
-	function teamDetailCtrl($stateParams, $ionicPopup, eliteApi) {
+	function teamDetailCtrl($stateParams, $ionicPopup, eliteApi, myTeamsService) {
 		var vm = this;
 
 		vm.teamId = Number($stateParams.id);
@@ -12,7 +12,10 @@
 						.flatten()
 						.find({"id": vm.teamId})
 						.value();
-
+			console.log("team bef",team);
+			console.log("data league",data);
+			vm.teamFollow = team;
+			vm.leagueName = data.league.name;
 			vm.teamName = team.name;
 
 			vm.games = _.chain(data.games)
@@ -37,6 +40,8 @@
 								.flatten()
 								.find({"teamId": vm.teamId})
 								.value();
+
+			
 		});
 
 		vm.following = false;
@@ -49,10 +54,12 @@
 				confirmPoup.then(function(res) {
 					if(res) {
 						vm.following = !vm.following;
+						myTeamsService.unfollowTeam(vm.teamFollow.id)
 					}
 				});
 			} else{
 				vm.following = !vm.following;
+				myTeamsService.followTeam({id: vm.teamFollow.id, name:vm.teamFollow.name ,leagueName: vm.leagueName});
 			}
 		};
 
