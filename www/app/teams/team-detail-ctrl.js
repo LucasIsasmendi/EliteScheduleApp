@@ -6,38 +6,39 @@
 		var vm = this;
 
 		vm.teamId = Number($stateParams.id);
-		var data = eliteApi.getLeagueData();
+		var data = eliteApi.getLeagueData().then(function(data){
+			var team = _.chain(data.teams)
+						.pluck('divisionTeams')
+						.flatten()
+						.find({"id": vm.teamId})
+						.value();
 
-		var team = _.chain(data.teams)
-					.pluck('divisionTeams')
-					.flatten()
-					.find({"id": vm.teamId})
-					.value();
+			vm.teamName = team.name;
 
-		vm.teamName = team.name;
+			vm.games = _.chain(data.games)
+						.filter(isTeamInGame)
+						.map(function(item) {
+							var isTeam1 = (item.team1Id === vm.teamId ? true : false);
+							var opponentName = isTeam1 ? item.team2 : item.team1;
+							var scoreDisplay = getScoreDisplay(isTeam1, item.team1Score,item.team2Score);
+							return {
+								gameId: item.id,
+								opponent: opponentName,
+								time: item.time,
+								location: item.location,
+								locationUrl: item.locationUrl,
+								scoreDisplay: scoreDisplay,
+								homeAway: (isTeam1 ? "vs." : "at")
+							};
+						})
+						.value();
+			vm.teamStanding = _.chain(data.standings)
+								.pluck('divisionStandings')
+								.flatten()
+								.find({"teamId": vm.teamId})
+								.value();
+		});
 
-		vm.games = _.chain(data.games)
-					.filter(isTeamInGame)
-					.map(function(item) {
-						var isTeam1 = (item.team1Id === vm.teamId ? true : false);
-						var opponentName = isTeam1 ? item.team2 : item.team1;
-						var scoreDisplay = getScoreDisplay(isTeam1, item.team1Score,item.team2Score);
-						return {
-							gameId: item.id,
-							opponent: opponentName,
-							time: item.time,
-							location: item.location,
-							locationUrl: item.locationUrl,
-							scoreDisplay: scoreDisplay,
-							homeAway: (isTeam1 ? "vs." : "at")
-						};
-					})
-					.value();
-		vm.teamStanding = _.chain(data.standings)
-							.pluck('divisionStandings')
-							.flatten()
-							.find({"teamId": vm.teamId})
-							.value();
 		vm.following = false;
 		vm.toggleFollow = function(){
 			if(vm.following) {

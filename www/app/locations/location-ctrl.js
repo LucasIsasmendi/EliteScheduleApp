@@ -5,7 +5,8 @@
 	function LocationCtrl(eliteApi) {
 		var vm = this;
 
-		var data = eliteApi.getLeagueData();
-		vm.locations = data.locations;
+		var data = eliteApi.getLeagueData().then(function(data){
+			vm.locations = data.locations;	
+		});		
 	};
 })();
