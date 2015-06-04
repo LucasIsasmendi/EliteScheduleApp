@@ -1,4 +1,16 @@
-angular.module('eliteApp',['ionic', 'angular-cache','uiGmapgoogle-maps'])
+angular.module('eliteApp',['ionic', 'starter.controllers', 'ionic.service.core', 'ionic.service.push', 'angular-cache','uiGmapgoogle-maps'])
+.config(['$ionicAppProvider', function($ionicAppProvider) {
+  // Identify app
+  $ionicAppProvider.identify({
+    // Your App ID
+    app_id: 'bb632045',
+    // The public API key services will use for this app
+    api_key: '51409dc36bd3fa4ed8b92bf94bef9194740035341c13cb3b',
+    // Your GCM sender ID/project number (Uncomment if supporting Android)
+    //gcm_id: 'YOUR_GCM_ID'
+  });
+
+}])
 
 .run(function($ionicPlatform, CacheFactory) {
   $ionicPlatform.ready(function() {
