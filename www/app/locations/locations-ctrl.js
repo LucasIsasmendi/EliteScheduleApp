@@ -1,8 +1,8 @@
 (function() {
 	'use strict';
-	angular.module('eliteApp').controller('LocationCtrl', ['eliteApi', LocationCtrl]);
+	angular.module('eliteApp').controller('LocationsCtrl', ['eliteApi', LocationsCtrl]);
 	
-	function LocationCtrl(eliteApi) {
+	function LocationsCtrl(eliteApi) {
 		var vm = this;
 
 		var data = eliteApi.getLeagueData().then(function(data){
